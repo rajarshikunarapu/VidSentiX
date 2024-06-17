@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>VidSentiX</title>
+</head>
+<body>
+    <div class="logo" style="background-image: url({{ url_for('static', filename='images/logo.jpg') }});"></div>
+    <button id="startButton" class="button">Start Voice Input</button>
+<div id="output"></div>
+<!-- <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5.2.packed.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/sprinkle.js"></script> -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    function sendData() { 
+            console.log("endter");
+            var value = sessionStorage.getItem('data'); 
+            $.ajax({ 
+                url: '/emoji', 
+                type: 'POST', 
+                contentType: 'application/json', 
+                data: JSON.stringify({ 'value': value }),
+                success: function(response) { 
+                    console.log(response.result['emoji']);
+                    document.getElementById('output').textContent = response.result['emoji']+ " " + response.result['sentiment']; 
+                }, 
+                error: function(error) { 
+                    console.log(error); 
+                } 
+            }); 
+        } 
+    const startButton = document.getElementById('startButton');
+const outputDiv = document.getElementById('output');
+
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+recognition.lang = 'en-US';
+
+recognition.onstart = () => {
+    startButton.textContent = 'Listening...';
+};
+
+recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    // outputDiv.textContent = transcript;
+    sessionStorage.setItem('data', transcript);
+};
+
+
+recognition.onend = () => {
+    startButton.textContent = 'Start Voice Input';
+    sendData();
+    // window.location.href = '/emoji';
+
+};
+
+startButton.addEventListener('click', () => {
+    recognition.start();
+});
+
+</script>
+</body>
+</html>
