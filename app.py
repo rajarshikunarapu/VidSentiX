@@ -17,11 +17,11 @@ def emoji():
     friendly_threshold = threshold
     hostile_threshold = -threshold
     if sentiment >= friendly_threshold:
-        ans={'emoji':'😊','sentiment':sentiment} 
+        ans={'emoji':'😊','sentiment':sentiment,'message':result} 
     elif sentiment <= hostile_threshold:
-        ans={'emoji':'😡','sentiment':sentiment}
+        ans={'emoji':'😡','sentiment':sentiment,'message':result}
     else:
-        ans={'emoji':'😐','sentiment':sentiment}
+        ans={'emoji':'😐','sentiment':sentiment,'message':result}
     return jsonify(result=ans)
 if __name__ == '__main__':
     app.run(debug=True)
